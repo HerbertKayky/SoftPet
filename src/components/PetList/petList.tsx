@@ -1,7 +1,7 @@
-import styles from "../app/page.module.css";
+import styles from "./petList.module.css";
 import { useState } from "react";
-import ModalRemove from "./modalRemove";
-import ModalEdit from "./modalEdit";
+import ModalRemove from "../ModalRemove/modalRemove";
+import ModalEdit from "../ModalEdit/modalEdit";
 
 interface Pet {
   nome: string;

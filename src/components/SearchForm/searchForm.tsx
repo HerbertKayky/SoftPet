@@ -1,7 +1,7 @@
 import { useState } from "react";
-import styles from "../app/page.module.css";
+import styles from "./searchForm.module.css";
 import { FiSearch, FiPlusCircle } from "react-icons/fi";
-import Modal, { Pet } from "./modal";
+import Modal, { Pet } from "../ModalRegister/modal";
 
 interface SearchFormProps {
   handleOpenModal: () => void;

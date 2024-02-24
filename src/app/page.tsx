@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
-import Header from "@/components/header";
-import SearchForm from "@/components/searchForm";
-import Modal, { Pet } from "@/components/modal";
-import PetList from "@/components/petList";
+import Header from "@/components/Header/header";
+import SearchForm from "@/components/SearchForm/searchForm";
+import Modal, { Pet } from "@/components/ModalRegister/modal";
+import PetList from "@/components/PetList/petList";
 
 const Page: React.FC = () => {
   const [pets, setPets] = useState<Pet[]>([]);

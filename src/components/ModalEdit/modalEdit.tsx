@@ -1,15 +1,13 @@
 'use client'
 
-
 import { FC, useState } from "react";
-import styles from "../app/page.module.css";
-import { IoClose } from "react-icons/io5";
-import { FiPlusCircle } from "react-icons/fi";
-import { IoArrowBackCircleOutline } from "react-icons/io5";
+import styles from "./modalEdit.module.css";
+import { IoArrowBackCircleOutline, IoClose } from "react-icons/io5";
 
-interface ModalProps {
+interface ModalEditProps {
+  petData: Pet;
   onClose: () => void;
-  onAddPet: (newPet: Pet) => void;
+  onEditItem: (editedPet: Pet) => void;
 }
 
 export interface Pet {
@@ -21,17 +19,10 @@ export interface Pet {
   animal: "Cachorro" | "Gato";
 }
 
-const Modal: FC<ModalProps> = ({ onClose, onAddPet }) => {
-  const [formData, setFormData] = useState<Pet>({
-    nome: "",
-    dono: "",
-    raca: "",
-    telefone: "",
-    dataNascimento: "",
-    animal: "Gato"
-  });
+const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData }) => {
+  const [formData, setFormData] = useState<Pet>(petData);
 
-  const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
@@ -39,11 +30,11 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet }) => {
     }));
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
     setFormData((prevState) => ({
       ...prevState,
-      [name]: value,
+      animal: value as "Cachorro" | "Gato",
     }));
   };
 
@@ -69,8 +60,7 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet }) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onAddPet(formData);
-    console.log("Pet adicionado: ",formData)
+    onEditItem(formData);
     onClose();
   };
 
@@ -78,10 +68,7 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet }) => {
     <div className={styles.register_animal_container}>
       <div className={styles.register_animal}>
         <div className={styles.header_animal}>
-          <div className={styles.div_circle}>
-            <FiPlusCircle />
-          </div>
-          <h1>Cadastrar</h1>
+          <h1>Editar</h1>
           <button className={styles.button_icon} onClick={onClose}>
             <IoClose />
           </button>
@@ -99,7 +86,6 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet }) => {
                 name="nome"
                 value={formData.nome}
                 onChange={handleChange}
-                required
               />
             </div>
             <div>
@@ -112,7 +98,6 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet }) => {
                 name="dono"
                 value={formData.dono}
                 onChange={handleChange}
-                required
               />
             </div>
             <div>
@@ -126,7 +111,6 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet }) => {
                 value={formData.telefone}
                 onChange={handlePhoneChange}
                 placeholder="(00) 0 0000-0000"
-                required
               />
             </div>
           </div>
@@ -143,19 +127,19 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet }) => {
                   id="cachorro"
                   name="animal"
                   value="Cachorro"
+                  checked={formData.animal === "Cachorro"} 
                   onChange={handleRadioChange}
-                  required
                 />
-                <p>Cachorro</p>
+                <label htmlFor="cachorro">Cachorro</label>
                 <input
                   type="radio"
                   id="gato"
                   name="animal"
                   value="Gato"
+                  checked={formData.animal === "Gato"} 
                   onChange={handleRadioChange}
-                  required
                 />
-                <p>Gato</p>
+                <label htmlFor="gato">Gato</label>
               </div>
             </div>
             <div>
@@ -169,7 +153,6 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet }) => {
                 name="raca"
                 value={formData.raca}
                 onChange={handleChange}
-                required
               />
             </div>
             <div>
@@ -183,7 +166,6 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet }) => {
                 name="dataNascimento"
                 value={formData.dataNascimento}
                 onChange={handleChange}
-                required
               />
             </div>
           </div>
@@ -193,16 +175,13 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet }) => {
               Voltar
             </button>
             <button type="submit" className={styles.button_register_modal}>
-              <FiPlusCircle size={25} />
-              Cadastrar
+              Salvar
             </button>
           </div>
         </form>
-
-        
       </div>
     </div>
   );
 };
 
-export default Modal;
+export default ModalEdit;

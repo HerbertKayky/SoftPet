@@ -1,12 +1,15 @@
-import { FC, useState } from "react";
-import styles from "../app/page.module.css";
-import { IoClose } from "react-icons/io5";
-import { FiTrash } from "react-icons/fi";
+'use client'
 
-interface ModalRemoveProps {
+
+import { FC, useState } from "react";
+import styles from "./modal.module.css";
+import { IoClose } from "react-icons/io5";
+import { FiPlusCircle } from "react-icons/fi";
+import { IoArrowBackCircleOutline } from "react-icons/io5";
+
+interface ModalProps {
   onClose: () => void;
-  onRemoveItem: () => void;
-  petData: Pet;
+  onAddPet: (newPet: Pet) => void;
 }
 
 export interface Pet {
@@ -15,14 +18,26 @@ export interface Pet {
   raca: string;
   telefone: string;
   dataNascimento: string;
+  animal: "Cachorro" | "Gato";
 }
 
-const ModalRemove: FC<ModalRemoveProps> = ({
-  onClose,
-  onRemoveItem,
-  petData,
-}) => {
-  const [formData, setFormData] = useState<Pet>(petData);
+const Modal: FC<ModalProps> = ({ onClose, onAddPet }) => {
+  const [formData, setFormData] = useState<Pet>({
+    nome: "",
+    dono: "",
+    raca: "",
+    telefone: "",
+    dataNascimento: "",
+    animal: "Gato"
+  });
+
+  const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -32,9 +47,30 @@ const ModalRemove: FC<ModalRemoveProps> = ({
     }));
   };
 
+  const formatPhoneNumber = (value: string) => {
+    const phoneNumber = value.replace(/\D/g, "");
+    const match = phoneNumber.match(/^(\d{2})(\d{1})(\d{4})(\d{4})$/);
+
+    if (match) {
+      return `(${match[1]}) ${match[2]} ${match[3]}-${match[4]}`;
+    }
+
+    return value;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    const formattedValue = formatPhoneNumber(value);
+    setFormData((prevState) => ({
+      ...prevState,
+      telefone: formattedValue,
+    }));
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onRemoveItem();
+    onAddPet(formData);
+    console.log("Pet adicionado: ",formData)
     onClose();
   };
 
@@ -43,9 +79,9 @@ const ModalRemove: FC<ModalRemoveProps> = ({
       <div className={styles.register_animal}>
         <div className={styles.header_animal}>
           <div className={styles.div_circle}>
-            <FiTrash />
+            <FiPlusCircle />
           </div>
-          <h1>Remover</h1>
+          <h1>Cadastrar</h1>
           <button className={styles.button_icon} onClick={onClose}>
             <IoClose />
           </button>
@@ -63,7 +99,7 @@ const ModalRemove: FC<ModalRemoveProps> = ({
                 name="nome"
                 value={formData.nome}
                 onChange={handleChange}
-                readOnly 
+                required
               />
             </div>
             <div>
@@ -76,7 +112,7 @@ const ModalRemove: FC<ModalRemoveProps> = ({
                 name="dono"
                 value={formData.dono}
                 onChange={handleChange}
-                readOnly 
+                required
               />
             </div>
             <div>
@@ -88,14 +124,40 @@ const ModalRemove: FC<ModalRemoveProps> = ({
                 type="text"
                 name="telefone"
                 value={formData.telefone}
-                onChange={handleChange}
+                onChange={handlePhoneChange}
                 placeholder="(00) 0 0000-0000"
-                readOnly 
+                required
               />
             </div>
           </div>
 
           <div className={styles.form_section}>
+            <div>
+              <label>
+                <img className={styles.dna} src="/dna.svg" alt="" />
+                Animal
+              </label>
+              <div className={styles.radio}>
+                <input
+                  type="radio"
+                  id="cachorro"
+                  name="animal"
+                  value="Cachorro"
+                  onChange={handleRadioChange}
+                  required
+                />
+                <p>Cachorro</p>
+                <input
+                  type="radio"
+                  id="gato"
+                  name="animal"
+                  value="Gato"
+                  onChange={handleRadioChange}
+                  required
+                />
+                <p>Gato</p>
+              </div>
+            </div>
             <div>
               <label>
                 <img className={styles.dna} src="/dna.svg" alt="" />
@@ -107,7 +169,7 @@ const ModalRemove: FC<ModalRemoveProps> = ({
                 name="raca"
                 value={formData.raca}
                 onChange={handleChange}
-                readOnly 
+                required
               />
             </div>
             <div>
@@ -116,27 +178,31 @@ const ModalRemove: FC<ModalRemoveProps> = ({
                 Nascimento <span>(Aproximado)</span>
               </label>
               <input
-                type="text" 
+                type="date"
                 placeholder="22/08/2020"
                 name="dataNascimento"
                 value={formData.dataNascimento}
                 onChange={handleChange}
-                readOnly 
+                required
               />
             </div>
           </div>
           <div className={styles.register_buttons}>
             <button onClick={onClose} className={styles.back_button}>
+              <IoArrowBackCircleOutline size={25} />
               Voltar
             </button>
             <button type="submit" className={styles.button_register_modal}>
-              Remover
+              <FiPlusCircle size={25} />
+              Cadastrar
             </button>
           </div>
         </form>
+
+        
       </div>
     </div>
   );
 };
 
-export default ModalRemove;
+export default Modal;

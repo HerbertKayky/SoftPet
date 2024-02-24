@@ -1,13 +1,12 @@
-'use client'
-
 import { FC, useState } from "react";
-import styles from "../app/page.module.css";
-import { IoArrowBackCircleOutline, IoClose } from "react-icons/io5";
+import styles from "./modalRemove.module.css";
+import { IoClose } from "react-icons/io5";
+import { FiTrash } from "react-icons/fi";
 
-interface ModalEditProps {
-  petData: Pet;
+interface ModalRemoveProps {
   onClose: () => void;
-  onEditItem: (editedPet: Pet) => void;
+  onRemoveItem: () => void;
+  petData: Pet;
 }
 
 export interface Pet {
@@ -16,10 +15,13 @@ export interface Pet {
   raca: string;
   telefone: string;
   dataNascimento: string;
-  animal: "Cachorro" | "Gato";
 }
 
-const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData }) => {
+const ModalRemove: FC<ModalRemoveProps> = ({
+  onClose,
+  onRemoveItem,
+  petData,
+}) => {
   const [formData, setFormData] = useState<Pet>(petData);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,37 +32,9 @@ const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData }) => {
     }));
   };
 
-  const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      animal: value as "Cachorro" | "Gato",
-    }));
-  };
-
-  const formatPhoneNumber = (value: string) => {
-    const phoneNumber = value.replace(/\D/g, "");
-    const match = phoneNumber.match(/^(\d{2})(\d{1})(\d{4})(\d{4})$/);
-
-    if (match) {
-      return `(${match[1]}) ${match[2]} ${match[3]}-${match[4]}`;
-    }
-
-    return value;
-  };
-
-  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    const formattedValue = formatPhoneNumber(value);
-    setFormData((prevState) => ({
-      ...prevState,
-      telefone: formattedValue,
-    }));
-  };
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onEditItem(formData);
+    onRemoveItem();
     onClose();
   };
 
@@ -68,7 +42,10 @@ const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData }) => {
     <div className={styles.register_animal_container}>
       <div className={styles.register_animal}>
         <div className={styles.header_animal}>
-          <h1>Editar</h1>
+          <div className={styles.div_circle}>
+            <FiTrash />
+          </div>
+          <h1>Remover</h1>
           <button className={styles.button_icon} onClick={onClose}>
             <IoClose />
           </button>
@@ -86,6 +63,7 @@ const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData }) => {
                 name="nome"
                 value={formData.nome}
                 onChange={handleChange}
+                readOnly
               />
             </div>
             <div>
@@ -98,6 +76,7 @@ const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData }) => {
                 name="dono"
                 value={formData.dono}
                 onChange={handleChange}
+                readOnly
               />
             </div>
             <div>
@@ -109,39 +88,14 @@ const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData }) => {
                 type="text"
                 name="telefone"
                 value={formData.telefone}
-                onChange={handlePhoneChange}
+                onChange={handleChange}
                 placeholder="(00) 0 0000-0000"
+                readOnly
               />
             </div>
           </div>
 
           <div className={styles.form_section}>
-            <div>
-              <label>
-                <img className={styles.dna} src="/dna.svg" alt="" />
-                Animal
-              </label>
-              <div className={styles.radio}>
-                <input
-                  type="radio"
-                  id="cachorro"
-                  name="animal"
-                  value="Cachorro"
-                  checked={formData.animal === "Cachorro"} 
-                  onChange={handleRadioChange}
-                />
-                <label htmlFor="cachorro">Cachorro</label>
-                <input
-                  type="radio"
-                  id="gato"
-                  name="animal"
-                  value="Gato"
-                  checked={formData.animal === "Gato"} 
-                  onChange={handleRadioChange}
-                />
-                <label htmlFor="gato">Gato</label>
-              </div>
-            </div>
             <div>
               <label>
                 <img className={styles.dna} src="/dna.svg" alt="" />
@@ -153,6 +107,7 @@ const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData }) => {
                 name="raca"
                 value={formData.raca}
                 onChange={handleChange}
+                readOnly
               />
             </div>
             <div>
@@ -161,21 +116,21 @@ const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData }) => {
                 Nascimento <span>(Aproximado)</span>
               </label>
               <input
-                type="date"
+                type="text"
                 placeholder="22/08/2020"
                 name="dataNascimento"
                 value={formData.dataNascimento}
                 onChange={handleChange}
+                readOnly
               />
             </div>
           </div>
           <div className={styles.register_buttons}>
             <button onClick={onClose} className={styles.back_button}>
-              <IoArrowBackCircleOutline size={25} />
               Voltar
             </button>
             <button type="submit" className={styles.button_register_modal}>
-              Salvar
+              Remover
             </button>
           </div>
         </form>
@@ -184,4 +139,4 @@ const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData }) => {
   );
 };
 
-export default ModalEdit;
+export default ModalRemove;
