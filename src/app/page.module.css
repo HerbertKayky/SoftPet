@@ -62,7 +62,7 @@
   height: 33px;
   font-size: 16px;
   align-items: center;
-  font-weight: 600;
+  font-weight: 500;
   display: flex;
   justify-content: center;
 }
@@ -74,7 +74,7 @@
   padding: 13px 10px;
   border-radius: 10px;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
   margin-left: 10px;
   margin-right: 40px;
   width: 9.5%;
@@ -280,7 +280,7 @@
 }
 
 .header_animal h1 {
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .div_circle svg {
@@ -313,7 +313,7 @@
 .radio p {
   position: relative;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
   border: 3px solid #404a5c;
   border-radius: 10px;
   display: inline-block;
@@ -361,7 +361,7 @@
   padding-top: 15px;
   padding-right: 15px;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .form_section input {
@@ -370,7 +370,7 @@
   outline: none;
   height: 40px;
   border-radius: 10px;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 16px;
   padding-left: 10px;
   color: #fff;

@@ -58,6 +58,23 @@ const PetList: React.FC<PetListProps> = ({ pets, setPets, searchTerm }) => {
     closeModal();
   };
 
+  const calculateAge = (birthdate: string) => {
+    const today = new Date();
+    const birthDate = new Date(birthdate);
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const month = today.getMonth() - birthDate.getMonth();
+    if (month < 0 || (month === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+  const formatBirthdate = (birthdate: string) => {
+    const birthDate = new Date(birthdate);
+    birthDate.setDate(birthDate.getDate() + 1)
+    return birthDate.toLocaleDateString('pt-BR');
+  };
+
   const filteredPets = pets.filter((pet) =>
     pet.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -98,7 +115,7 @@ const PetList: React.FC<PetListProps> = ({ pets, setPets, searchTerm }) => {
               </span>
               <span>
                 <img src="/calendar.svg" alt="" />
-                Idade: {pet.dataNascimento}
+                Idade: {calculateAge(pet.dataNascimento)} Anos ({formatBirthdate(pet.dataNascimento)})
               </span>
 
               <button
