@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useState } from "react";
 import styles from "../app/page.module.css";
@@ -8,12 +8,27 @@ import Modal, { Pet } from "./modal";
 interface SearchFormProps {
   handleOpenModal: () => void;
   onAddPet: (newPet: Pet) => void;
+  pets: Pet[];
 }
 
 const SearchForm: React.FC<SearchFormProps> = ({
   handleOpenModal,
   onAddPet,
+  pets,
 }) => {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = () => {
+    const filteredPets = pets.filter((pet) =>
+      pet.nome.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    console.log("Resultados da pesquisa", filteredPets);
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
   const [modalOpen, setModalOpen] = useState(false);
 
   const handleCloseModal = () => {
@@ -25,8 +40,8 @@ const SearchForm: React.FC<SearchFormProps> = ({
       <FiSearch className={styles.icon} />
 
       <div className={styles.input_container}>
-        <input type="text" />
-        <button>Pesquisar</button>
+        <input type="text" value={searchTerm} onChange={handleChange} />
+        <button onClick={handleSearch}>Pesquisar</button>
       </div>
 
       <button onClick={handleOpenModal} className={styles.button_register}>

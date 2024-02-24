@@ -22,6 +22,7 @@ const PetList: React.FC<PetListProps> = ({ pets, setPets }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPetIndex, setSelectedPetIndex] = useState<number>(-1);
   const [modalType, setModalType] = useState<"edit" | "remove">("edit");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const toggleActive = (index: number) => {
     setActiveIndex(index === activeIndex ? null : index);
@@ -57,9 +58,13 @@ const PetList: React.FC<PetListProps> = ({ pets, setPets }) => {
     closeModal();
   };
 
+  const filteredPets = pets.filter((pet) =>
+    pet.nome.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <section className={styles.container}>
-      {pets.map((pet, index) => (
+      {filteredPets.map((pet, index) => (
         <div key={index} className={styles.item}>
           <div className={styles.circle}>
             <img src={`/${pet.animal.toLowerCase()}.svg`} alt="" />
