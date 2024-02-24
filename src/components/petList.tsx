@@ -15,14 +15,14 @@ interface Pet {
 interface PetListProps {
   pets: Pet[];
   setPets: React.Dispatch<React.SetStateAction<Pet[]>>;
+  searchTerm: string;
 }
 
-const PetList: React.FC<PetListProps> = ({ pets, setPets }) => {
+const PetList: React.FC<PetListProps> = ({ pets, setPets, searchTerm }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPetIndex, setSelectedPetIndex] = useState<number>(-1);
   const [modalType, setModalType] = useState<"edit" | "remove">("edit");
-  const [searchTerm, setSearchTerm] = useState("");
 
   const toggleActive = (index: number) => {
     setActiveIndex(index === activeIndex ? null : index);
@@ -65,7 +65,7 @@ const PetList: React.FC<PetListProps> = ({ pets, setPets }) => {
   return (
     <section className={styles.container}>
       {filteredPets.map((pet, index) => (
-        <div key={index} className={styles.item}>
+        <div key={index} className={`${styles.item} ${activeIndex === index ? styles.activeItem : ''}`}>
           <div className={styles.circle}>
             <img src={`/${pet.animal.toLowerCase()}.svg`} alt="" />
           </div>

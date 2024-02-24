@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import styles from "../app/page.module.css";
 import { FiSearch, FiPlusCircle } from "react-icons/fi";
@@ -8,31 +6,22 @@ import Modal, { Pet } from "./modal";
 interface SearchFormProps {
   handleOpenModal: () => void;
   onAddPet: (newPet: Pet) => void;
-  pets: Pet[];
+  onSearch: (searchTerm: string) => void;
 }
 
 const SearchForm: React.FC<SearchFormProps> = ({
   handleOpenModal,
   onAddPet,
-  pets,
+  onSearch,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearch = () => {
-    const filteredPets = pets.filter((pet) =>
-      pet.nome.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    console.log("Resultados da pesquisa", filteredPets);
+    onSearch(searchTerm);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
-  };
-
-  const [modalOpen, setModalOpen] = useState(false);
-
-  const handleCloseModal = () => {
-    setModalOpen(false);
   };
 
   return (
@@ -48,7 +37,6 @@ const SearchForm: React.FC<SearchFormProps> = ({
         <FiPlusCircle className={styles.icon_plus} size={23} />
         Cadastrar
       </button>
-      {modalOpen && <Modal onClose={handleCloseModal} onAddPet={onAddPet} />}
     </div>
   );
 };
