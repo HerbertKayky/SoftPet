@@ -3,6 +3,8 @@
 import { FC, useState } from "react";
 import styles from "./modalEdit.module.css";
 import { IoArrowBackCircleOutline, IoClose } from "react-icons/io5";
+import { Pet } from "@/types";
+
 
 interface ModalEditProps {
   petData: Pet;
@@ -10,14 +12,7 @@ interface ModalEditProps {
   onEditItem: (editedPet: Pet) => void;
 }
 
-export interface Pet {
-  nome: string;
-  dono: string;
-  raca: string;
-  telefone: string;
-  dataNascimento: string;
-  animal: "Cachorro" | "Gato";
-}
+
 
 const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData }) => {
   const [formData, setFormData] = useState<Pet>(petData);

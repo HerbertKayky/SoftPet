@@ -1,12 +1,28 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "@/components/Header/header";
 import SearchForm from "@/components/SearchForm/searchForm";
-import Modal, { Pet } from "@/components/ModalRegister/modal";
+import Modal from "@/components/ModalRegister/modal";
 import PetList from "@/components/PetList/petList";
+import { Pet } from "@/types";
+
+
+
+
 
 const Page: React.FC = () => {
   const [pets, setPets] = useState<Pet[]>([]);
+
+
+  useEffect(() => {
+    fetch("http://localhost:3000/pets")
+      .then((response) => response.json())
+      .then((data) => setPets(data))
+      .catch((error) => console.error("Error fetching pets:", error));
+  }, []);
+
+
+
   const [modalOpen, setModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 

@@ -6,22 +6,17 @@ import styles from "./modal.module.css";
 import { IoClose } from "react-icons/io5";
 import { FiPlusCircle } from "react-icons/fi";
 import { IoArrowBackCircleOutline } from "react-icons/io5";
+import { Pet } from "@/types";
 
 interface ModalProps {
   onClose: () => void;
   onAddPet: (newPet: Pet) => void;
+  setPets: React.Dispatch<React.SetStateAction<Pet[]>>;
 }
 
-export interface Pet {
-  nome: string;
-  dono: string;
-  raca: string;
-  telefone: string;
-  dataNascimento: string;
-  animal: "Cachorro" | "Gato";
-}
 
-const Modal: FC<ModalProps> = ({ onClose, onAddPet }) => {
+
+const Modal: FC<ModalProps> = ({ onClose, onAddPet, setPets }) => {
   const [formData, setFormData] = useState<Pet>({
     nome: "",
     dono: "",
@@ -67,11 +62,39 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet }) => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    onAddPet(formData);
-    console.log("Pet adicionado: ",formData)
-    onClose();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    
+  
+    try {
+      const response = await fetch("http://localhost:3000/pets", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Erro ao cadastrar pet");
+      }
+  
+      
+      console.log("Pet cadastrado com sucesso!");
+      
+      
+      onClose();
+
+
+
+      const updatedPetsResponse = await fetch("http://localhost:3000/pets");
+      if (!updatedPetsResponse.ok) {
+        throw new Error("Erro ao obter a lista atualizada de pets");
+      }
+      const updatedPetsData = await updatedPetsResponse.json();
+      setPets(updatedPetsData);
+    } catch (error) {
+      console.error("Erro ao cadastrar pet:", error.message);
+    }
   };
 
   return (

@@ -2,6 +2,8 @@ import { FC, useState } from "react";
 import styles from "./modalRemove.module.css";
 import { IoClose } from "react-icons/io5";
 import { FiTrash } from "react-icons/fi";
+import { Pet } from "@/types";
+
 
 interface ModalRemoveProps {
   onClose: () => void;
@@ -9,13 +11,6 @@ interface ModalRemoveProps {
   petData: Pet;
 }
 
-export interface Pet {
-  nome: string;
-  dono: string;
-  raca: string;
-  telefone: string;
-  dataNascimento: string;
-}
 
 const ModalRemove: FC<ModalRemoveProps> = ({
   onClose,

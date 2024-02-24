@@ -1,28 +1,32 @@
 import styles from "./petList.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ModalRemove from "../ModalRemove/modalRemove";
 import ModalEdit from "../ModalEdit/modalEdit";
+import { Pet } from "@/types";
 
-interface Pet {
-  nome: string;
-  dono: string;
-  raca: string;
-  telefone: string;
-  dataNascimento: string;
-  animal: "Cachorro" | "Gato";
-}
+
+
 
 interface PetListProps {
   pets: Pet[];
   setPets: React.Dispatch<React.SetStateAction<Pet[]>>;
+
   searchTerm: string;
 }
 
-const PetList: React.FC<PetListProps> = ({ pets, setPets, searchTerm }) => {
+const PetList: React.FC<PetListProps> = ({ searchTerm }) => {
+  const [pets, setPets] = useState<Pet[]>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPetIndex, setSelectedPetIndex] = useState<number>(-1);
   const [modalType, setModalType] = useState<"edit" | "remove">("edit");
+
+  useEffect(() => {
+    fetch("http://localhost:3000/pets")
+      .then((response) => response.json())
+      .then((data) => setPets(data))
+      .catch((error) => console.error("Error fetching pets:", error));
+  }, []);
 
   const toggleActive = (index: number) => {
     setActiveIndex(index === activeIndex ? null : index);
@@ -51,7 +55,10 @@ const PetList: React.FC<PetListProps> = ({ pets, setPets, searchTerm }) => {
   const handleEditItem = (editedPet: Pet) => {
     if (selectedPetIndex !== -1) {
       const updatedPets = [...pets];
-      updatedPets[selectedPetIndex] = editedPet;
+      updatedPets[selectedPetIndex] = {
+        ...editedPet,
+        id: pets[selectedPetIndex].id,
+      };
       setPets(updatedPets);
       console.log("Pet editado:", editedPet);
     }
@@ -71,8 +78,8 @@ const PetList: React.FC<PetListProps> = ({ pets, setPets, searchTerm }) => {
 
   const formatBirthdate = (birthdate: string) => {
     const birthDate = new Date(birthdate);
-    birthDate.setDate(birthDate.getDate() + 1)
-    return birthDate.toLocaleDateString('pt-BR');
+    birthDate.setDate(birthDate.getDate() + 1);
+    return birthDate.toLocaleDateString("pt-BR");
   };
 
   const filteredPets = pets.filter((pet) =>
@@ -82,7 +89,12 @@ const PetList: React.FC<PetListProps> = ({ pets, setPets, searchTerm }) => {
   return (
     <section className={styles.container}>
       {filteredPets.map((pet, index) => (
-        <div key={index} className={`${styles.item} ${activeIndex === index ? styles.activeItem : ''}`}>
+        <div
+          key={pet.id}
+          className={`${styles.item} ${
+            activeIndex === index ? styles.activeItem : ""
+          }`}
+        >
           <div className={styles.circle}>
             <img src={`/${pet.animal.toLowerCase()}.svg`} alt="" />
           </div>
@@ -115,7 +127,8 @@ const PetList: React.FC<PetListProps> = ({ pets, setPets, searchTerm }) => {
               </span>
               <span>
                 <img src="/calendar.svg" alt="" />
-                Idade: {calculateAge(pet.dataNascimento)} Anos ({formatBirthdate(pet.dataNascimento)})
+                Idade: {calculateAge(pet.dataNascimento)} Anos (
+                {formatBirthdate(pet.dataNascimento)})
               </span>
 
               <button
