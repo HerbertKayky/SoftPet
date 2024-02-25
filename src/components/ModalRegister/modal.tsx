@@ -1,5 +1,3 @@
-"use client";
-
 import { FC, useState } from "react";
 import styles from "./modal.module.css";
 import { IoClose } from "react-icons/io5";
@@ -60,7 +58,7 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet }) => {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+    
 
     try {
       const response = await fetch("http://localhost:3000/pets", {
@@ -73,7 +71,9 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet }) => {
       if (!response.ok) {
         throw new Error("Erro ao cadastrar pet");
       }
+      const newPet = await response.json()
       console.log("Pet cadastrado com sucesso!");
+      onAddPet(newPet)
       onClose();
     } catch (error) {
       console.error("Erro ao cadastrar pet:");

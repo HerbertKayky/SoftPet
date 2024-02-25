@@ -40,13 +40,6 @@ const PetList: React.FC<PetListProps> = ({ searchTerm }) => {
   };
 
 
-  const handleCreateItem = (newPet: Pet) => {
-    const updatedPets = [...pets, newPet]
-    setPets(updatedPets)
-    closeModal()
-  }
-
-
   const handleRemoveItem = () => {
     if (selectedPetIndex !== -1) {
       const updatedPets = pets.filter((_, index) => index !== selectedPetIndex);

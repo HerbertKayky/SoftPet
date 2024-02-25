@@ -25,6 +25,11 @@ const ModalRemove: FC<ModalRemoveProps> = ({
     }));
   };
 
+  const handleRadioChange = () => {
+    // Não faz nada, apenas para impedir a alteração dos campos de rádio
+  };
+
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
@@ -56,6 +61,7 @@ const ModalRemove: FC<ModalRemoveProps> = ({
 
         <form className={styles.form_modal} onSubmit={handleSubmit}>
           <div className={styles.form_section}>
+            
             <div>
               <label>
                 <img className={styles.bone} src="/bone.svg" alt="" /> Nome
@@ -99,6 +105,45 @@ const ModalRemove: FC<ModalRemoveProps> = ({
           </div>
 
           <div className={styles.form_section}>
+          <div>
+              <label>
+                <img className={styles.dna} src="/dna.svg" alt="" />
+                Animal
+              </label>
+              <div className={styles.radio}>
+                <input
+                  type="radio"
+                  id="cachorro"
+                  name="animal"
+                  value="Cachorro"
+                  checked={formData.animal === "Cachorro"} 
+                  onChange={handleRadioChange}
+                  readOnly
+                />
+                <label htmlFor="cachorro">Cachorro</label>
+                <input
+                  type="radio"
+                  id="gato"
+                  name="animal"
+                  value="Gato"
+                  checked={formData.animal === "Gato"} 
+                  onChange={handleRadioChange}
+                  readOnly
+                />
+                <label htmlFor="gato">Gato</label>
+              </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
             <div>
               <label>
                 <img className={styles.dna} src="/dna.svg" alt="" />
