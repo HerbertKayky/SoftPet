@@ -1,5 +1,4 @@
-'use client'
-
+"use client";
 
 import { FC, useState } from "react";
 import styles from "./modal.module.css";
@@ -11,19 +10,17 @@ import { Pet } from "@/types";
 interface ModalProps {
   onClose: () => void;
   onAddPet: (newPet: Pet) => void;
-  setPets: React.Dispatch<React.SetStateAction<Pet[]>>;
+  petData?: Pet;
 }
 
-
-
-const Modal: FC<ModalProps> = ({ onClose, onAddPet, setPets }) => {
+const Modal: FC<ModalProps> = ({ onClose, onAddPet }) => {
   const [formData, setFormData] = useState<Pet>({
     nome: "",
     dono: "",
     raca: "",
     telefone: "",
     dataNascimento: "",
-    animal: "Gato"
+    animal: "Gato",
   });
 
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,8 +60,8 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet, setPets }) => {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    
-  
+    e.preventDefault()
+
     try {
       const response = await fetch("http://localhost:3000/pets", {
         method: "POST",
@@ -73,27 +70,13 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet, setPets }) => {
         },
         body: JSON.stringify(formData),
       });
-  
       if (!response.ok) {
         throw new Error("Erro ao cadastrar pet");
       }
-  
-      
       console.log("Pet cadastrado com sucesso!");
-      
-      
       onClose();
-
-
-
-      const updatedPetsResponse = await fetch("http://localhost:3000/pets");
-      if (!updatedPetsResponse.ok) {
-        throw new Error("Erro ao obter a lista atualizada de pets");
-      }
-      const updatedPetsData = await updatedPetsResponse.json();
-      setPets(updatedPetsData);
     } catch (error) {
-      console.error("Erro ao cadastrar pet:", error.message);
+      console.error("Erro ao cadastrar pet:");
     }
   };
 
@@ -122,7 +105,6 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet, setPets }) => {
                 name="nome"
                 value={formData.nome}
                 onChange={handleChange}
-                required
               />
             </div>
             <div>
@@ -135,7 +117,6 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet, setPets }) => {
                 name="dono"
                 value={formData.dono}
                 onChange={handleChange}
-                required
               />
             </div>
             <div>
@@ -149,7 +130,6 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet, setPets }) => {
                 value={formData.telefone}
                 onChange={handlePhoneChange}
                 placeholder="(00) 0 0000-0000"
-                required
               />
             </div>
           </div>
@@ -167,7 +147,6 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet, setPets }) => {
                   name="animal"
                   value="Cachorro"
                   onChange={handleRadioChange}
-                  required
                 />
                 <p>Cachorro</p>
                 <input
@@ -176,7 +155,6 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet, setPets }) => {
                   name="animal"
                   value="Gato"
                   onChange={handleRadioChange}
-                  required
                 />
                 <p>Gato</p>
               </div>
@@ -192,7 +170,6 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet, setPets }) => {
                 name="raca"
                 value={formData.raca}
                 onChange={handleChange}
-                required
               />
             </div>
             <div>
@@ -206,7 +183,6 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet, setPets }) => {
                 name="dataNascimento"
                 value={formData.dataNascimento}
                 onChange={handleChange}
-                required
               />
             </div>
           </div>
@@ -221,8 +197,6 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet, setPets }) => {
             </button>
           </div>
         </form>
-
-        
       </div>
     </div>
   );

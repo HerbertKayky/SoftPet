@@ -53,10 +53,24 @@ const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData }) => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onEditItem(formData);
-    onClose();
+    try {
+      const response = await fetch(`http://localhost:3000/pets/${petData.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to update pet');
+      }
+      onEditItem(formData);
+      onClose();
+    } catch (error) {
+      console.error('Error updating pet:', error);
+    }
   };
 
   return (

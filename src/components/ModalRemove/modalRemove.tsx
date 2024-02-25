@@ -4,13 +4,11 @@ import { IoClose } from "react-icons/io5";
 import { FiTrash } from "react-icons/fi";
 import { Pet } from "@/types";
 
-
 interface ModalRemoveProps {
   onClose: () => void;
   onRemoveItem: () => void;
   petData: Pet;
 }
-
 
 const ModalRemove: FC<ModalRemoveProps> = ({
   onClose,
@@ -27,10 +25,20 @@ const ModalRemove: FC<ModalRemoveProps> = ({
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    onRemoveItem();
-    onClose();
+    try {
+      const response = await fetch(`http://localhost:3000/pets/${petData.id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to delete pet");
+      }
+      onRemoveItem();
+      onClose();
+    } catch (error) {
+      console.error("Error deleting pet:", error);
+    }
   };
 
   return (

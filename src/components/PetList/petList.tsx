@@ -4,13 +4,9 @@ import ModalRemove from "../ModalRemove/modalRemove";
 import ModalEdit from "../ModalEdit/modalEdit";
 import { Pet } from "@/types";
 
-
-
-
 interface PetListProps {
   pets: Pet[];
   setPets: React.Dispatch<React.SetStateAction<Pet[]>>;
-
   searchTerm: string;
 }
 
@@ -42,6 +38,14 @@ const PetList: React.FC<PetListProps> = ({ searchTerm }) => {
     setModalOpen(false);
     setSelectedPetIndex(-1);
   };
+
+
+  const handleCreateItem = (newPet: Pet) => {
+    const updatedPets = [...pets, newPet]
+    setPets(updatedPets)
+    closeModal()
+  }
+
 
   const handleRemoveItem = () => {
     if (selectedPetIndex !== -1) {

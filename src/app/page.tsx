@@ -6,13 +6,8 @@ import Modal from "@/components/ModalRegister/modal";
 import PetList from "@/components/PetList/petList";
 import { Pet } from "@/types";
 
-
-
-
-
 const Page: React.FC = () => {
   const [pets, setPets] = useState<Pet[]>([]);
-
 
   useEffect(() => {
     fetch("http://localhost:3000/pets")
@@ -20,8 +15,6 @@ const Page: React.FC = () => {
       .then((data) => setPets(data))
       .catch((error) => console.error("Error fetching pets:", error));
   }, []);
-
-
 
   const [modalOpen, setModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -57,7 +50,10 @@ const Page: React.FC = () => {
           onSearch={handleSearch}
         />
         {modalOpen && (
-          <Modal onAddPet={handleAddPet} onClose={handleCloseModal} />
+          <Modal
+            onAddPet={handleAddPet}
+            onClose={handleCloseModal}
+          />
         )}
 
         <PetList pets={pets} setPets={setPets} searchTerm={searchTerm} />
