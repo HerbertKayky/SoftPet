@@ -1,7 +1,9 @@
 import { useState } from "react";
 import styles from "./searchForm.module.css";
 import { FiSearch, FiPlusCircle } from "react-icons/fi";
-import Modal, { Pet } from "../ModalRegister/modal";
+import Modal from "../ModalRegister/modal";
+import { Pet } from "@/types";
+
 
 interface SearchFormProps {
   handleOpenModal: () => void;
@@ -9,12 +11,9 @@ interface SearchFormProps {
   onSearch: (searchTerm: string) => void;
 }
 
-const SearchForm: React.FC<SearchFormProps> = ({
-  handleOpenModal,
-  onAddPet,
-  onSearch,
-}) => {
+const SearchForm: React.FC<SearchFormProps> = ({ onAddPet, onSearch }) => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [modalOpen, setModalOpen] = useState(false);
 
   const handleSearch = () => {
     onSearch(searchTerm);
@@ -22,6 +21,14 @@ const SearchForm: React.FC<SearchFormProps> = ({
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
+  };
+
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
   };
 
   return (
@@ -37,6 +44,10 @@ const SearchForm: React.FC<SearchFormProps> = ({
         <FiPlusCircle className={styles.icon_plus} size={23} />
         Cadastrar
       </button>
+
+      {modalOpen && (
+        <Modal onAddPet={onAddPet} onClose={handleCloseModal} />
+      )}
     </div>
   );
 };

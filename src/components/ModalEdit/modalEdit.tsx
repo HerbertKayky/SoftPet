@@ -1,5 +1,3 @@
-'use client'
-
 import { FC, useState } from "react";
 import styles from "./modalEdit.module.css";
 import { IoArrowBackCircleOutline, IoClose } from "react-icons/io5";
@@ -124,6 +122,8 @@ const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData }) => {
             </div>
           </div>
 
+
+
           <div className={styles.form_section}>
             <div>
               <label>
@@ -151,6 +151,10 @@ const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData }) => {
                 <label htmlFor="gato">Gato</label>
               </div>
             </div>
+
+
+
+
             <div>
               <label>
                 <img className={styles.dna} src="/dna.svg" alt="" />

@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import Header from "@/components/Header/header";
 import SearchForm from "@/components/SearchForm/searchForm";
@@ -8,6 +9,8 @@ import { Pet } from "@/types";
 
 const Page: React.FC = () => {
   const [pets, setPets] = useState<Pet[]>([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:3000/pets")
@@ -16,8 +19,7 @@ const Page: React.FC = () => {
       .catch((error) => console.error("Error fetching pets:", error));
   }, []);
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  
 
   const handleAddPet = (newPet: Pet) => {
     setPets((prevPets) => [...prevPets, newPet]);
