@@ -29,6 +29,11 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet }) => {
     }));
   };
 
+
+
+
+
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -58,8 +63,6 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet }) => {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    
-
     try {
       const response = await fetch("http://localhost:3000/pets", {
         method: "POST",
@@ -71,9 +74,9 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet }) => {
       if (!response.ok) {
         throw new Error("Erro ao cadastrar pet");
       }
-      const newPet = await response.json()
+      const newPet = await response.json();
       console.log("Pet cadastrado com sucesso!");
-      onAddPet(newPet)
+      onAddPet(newPet);
       onClose();
     } catch (error) {
       console.error("Erro ao cadastrar pet:");
@@ -141,22 +144,28 @@ const Modal: FC<ModalProps> = ({ onClose, onAddPet }) => {
                 Animal
               </label>
               <div className={styles.radio}>
-                <input
-                  type="radio"
-                  id="cachorro"
-                  name="animal"
-                  value="Cachorro"
-                  onChange={handleRadioChange}
-                />
-                <p>Cachorro</p>
-                <input
-                  type="radio"
-                  id="gato"
-                  name="animal"
-                  value="Gato"
-                  onChange={handleRadioChange}
-                />
-                <p>Gato</p>
+                <span>
+                  <input
+                    type="radio"
+                    id="cachorro"
+                    name="animal"
+                    value="Cachorro"
+                    checked={formData.animal === "Cachorro"}
+                    onChange={handleRadioChange}
+                  />
+                  <label>Cachorro</label>
+                </span>
+                <span>
+                  <input
+                    type="radio"
+                    id="gato"
+                    name="animal"
+                    value="Gato"
+                    checked={formData.animal === "Gato"}
+                    onChange={handleRadioChange}
+                  />
+                  <label>Gato</label>
+                </span>
               </div>
             </div>
             <div>

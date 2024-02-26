@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import styles from "./modalRemove.module.css";
-import { IoClose } from "react-icons/io5";
+import { IoClose, IoArrowBackCircleOutline } from "react-icons/io5";
 import { FiTrash } from "react-icons/fi";
 import { Pet } from "@/types";
 
@@ -28,7 +28,6 @@ const ModalRemove: FC<ModalRemoveProps> = ({
   const handleRadioChange = () => {
     // Não faz nada, apenas para impedir a alteração dos campos de rádio
   };
-
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -61,7 +60,6 @@ const ModalRemove: FC<ModalRemoveProps> = ({
 
         <form className={styles.form_modal} onSubmit={handleSubmit}>
           <div className={styles.form_section}>
-            
             <div>
               <label>
                 <img className={styles.bone} src="/bone.svg" alt="" /> Nome
@@ -105,7 +103,7 @@ const ModalRemove: FC<ModalRemoveProps> = ({
           </div>
 
           <div className={styles.form_section}>
-          <div>
+            <div>
               <label>
                 <img className={styles.dna} src="/dna.svg" alt="" />
                 Animal
@@ -116,7 +114,7 @@ const ModalRemove: FC<ModalRemoveProps> = ({
                   id="cachorro"
                   name="animal"
                   value="Cachorro"
-                  checked={formData.animal === "Cachorro"} 
+                  checked={formData.animal === "Cachorro"}
                   onChange={handleRadioChange}
                   readOnly
                 />
@@ -126,23 +124,13 @@ const ModalRemove: FC<ModalRemoveProps> = ({
                   id="gato"
                   name="animal"
                   value="Gato"
-                  checked={formData.animal === "Gato"} 
+                  checked={formData.animal === "Gato"}
                   onChange={handleRadioChange}
                   readOnly
                 />
                 <label htmlFor="gato">Gato</label>
               </div>
             </div>
-
-
-
-
-
-
-
-
-
-
 
             <div>
               <label>
@@ -173,11 +161,18 @@ const ModalRemove: FC<ModalRemoveProps> = ({
               />
             </div>
           </div>
+
+          <div className={styles.message}>
+            <span>Tem certeza que deseja remover esse pet?</span>
+          </div>
+
           <div className={styles.register_buttons}>
-            <button onClick={onClose} className={styles.back_button}>
+          <button onClick={onClose} className={styles.back_button}>
+              <IoArrowBackCircleOutline size={28} />
               Voltar
             </button>
             <button type="submit" className={styles.button_register_modal}>
+            <img src="/trash.svg" alt="" />
               Remover
             </button>
           </div>

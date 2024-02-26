@@ -56,6 +56,7 @@
 
 .header_animal h1 {
   font-weight: 500;
+  font-size: 30px;
 }
 
 .div_circle svg {
@@ -111,12 +112,12 @@
 }
 
 .radio input[type="radio"]:checked + p {
-  border-color: #fff; /* Mudar a cor da borda do label quando selecionado */
+  border-color: #fff; 
 }
 
 .radio input[type="radio"]:checked + p::before {
-  background-color: #fff; /* Cor de fundo quando selecionado */
-  border-color: #fff; /* Cor da borda quando selecionado */
+  background-color: #fff; 
+  border-color: #fff; 
 }
 
 .form_section span {
@@ -137,9 +138,13 @@
   font-weight: 500;
 }
 
+.form_section img {
+  padding-right: 6px;
+}
+
 .form_section input {
-  background-color: transparent;
-  border: 3px solid #404a5c;
+  background-color: #404a5c;
+  border: none;
   outline: none;
   height: 40px;
   border-radius: 10px;
@@ -149,11 +154,21 @@
   color: #fff;
 }
 
+.message {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+  font-size: 22px;
+  font-weight: 500;
+  margin-top: 20px;
+}
+
 .register_buttons {
   display: flex;
   width: 100%;
   justify-content: space-around;
-  padding-top: 45px;
+  padding-top: 30px;
 }
 
 .register_buttons button {
@@ -180,7 +195,12 @@
 }
 
 .button_register_modal {
-  background-image: linear-gradient(to right, #00cafc, #0056e2);
+  background-color: #ed254e;
   color: #fff;
   border: none;
+}
+
+.button_register_modal img {
+  padding-right: 6px;
+  width: 25px;
 }
