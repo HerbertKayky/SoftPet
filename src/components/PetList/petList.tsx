@@ -11,6 +11,7 @@ interface PetListProps {
 }
 
 const PetList: React.FC<PetListProps> = ({ searchTerm }) => {
+
   const [pets, setPets] = useState<Pet[]>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -30,7 +31,8 @@ const PetList: React.FC<PetListProps> = ({ searchTerm }) => {
 
   const openModal = (index: number, type: "edit" | "remove") => {
     setModalOpen(true);
-    setSelectedPetIndex(index);
+    const petIndex = indexOfFirstPet + index;
+    setSelectedPetIndex(petIndex);
     setModalType(type);
   };
 
@@ -39,25 +41,31 @@ const PetList: React.FC<PetListProps> = ({ searchTerm }) => {
     setSelectedPetIndex(-1);
   };
 
-
   const handleRemoveItem = () => {
     if (selectedPetIndex !== -1) {
-      const updatedPets = pets.filter((_, index) => index !== selectedPetIndex);
+      const selectedPet = filteredPets[selectedPetIndex]; 
+      const updatedPets = pets.filter((pet) => pet.id !== selectedPet.id);
       setPets(updatedPets);
-      console.log("Pet removido:", pets[selectedPetIndex]);
+      console.log("Pet removido:", selectedPet);
+      setSelectedPetIndex(-1); 
     }
     closeModal();
   };
 
   const handleEditItem = (editedPet: Pet) => {
     if (selectedPetIndex !== -1) {
-      const updatedPets = [...pets];
-      updatedPets[selectedPetIndex] = {
-        ...editedPet,
-        id: pets[selectedPetIndex].id,
-      };
+      const selectedPet = filteredPets[selectedPetIndex]; 
+      const updatedPets = pets.map((pet) => (pet.id === selectedPet.id ? editedPet : pet));
       setPets(updatedPets);
-      console.log("Pet editado:", editedPet);
+
+      const updatedIndex = indexOfFirstPet + filteredPets.findIndex((pet) => pet.id === editedPet.id);
+    if (updatedIndex !== -1) {
+      const updatedPage = Math.ceil((updatedIndex + 1) / petsPerPage);
+      setCurrentPage(updatedPage);
+    }
+      
+      console.log("Pet editado:", selectedPet);
+      setSelectedPetIndex(-1); 
     }
     closeModal();
   };
@@ -83,9 +91,36 @@ const PetList: React.FC<PetListProps> = ({ searchTerm }) => {
     pet.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [petsPerPage] = useState(16);
+
+  const indexOfLastPet = currentPage * petsPerPage;
+  const indexOfFirstPet = indexOfLastPet - petsPerPage;
+
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+
+  const currentPets = filteredPets.slice(indexOfFirstPet, indexOfLastPet);
+
+  useEffect(() => {
+    if (selectedPetIndex !== -1 && selectedPetIndex >= filteredPets.length) {
+      setSelectedPetIndex(-1); 
+    }
+  }, [filteredPets]);
+
+  useEffect(() => {
+    if (selectedPetIndex !== -1) {
+      const selectedPetId = pets[selectedPetIndex]?.id;
+      const updatedIndex = filteredPets.findIndex((pet) => pet.id === selectedPetId);
+      if (updatedIndex === -1) {
+        setSelectedPetIndex(-1); 
+      }
+    }
+  }, [pets, filteredPets]);
+
   return (
     <section className={styles.container}>
-      {filteredPets.map((pet, index) => (
+      {currentPets.map((pet, index) => (
         <div
           key={pet.id}
           className={`${styles.item} ${
@@ -158,9 +193,20 @@ const PetList: React.FC<PetListProps> = ({ searchTerm }) => {
           petData={pets[selectedPetIndex]}
           onClose={closeModal}
           onEditItem={handleEditItem}
+          petsPerPage={petsPerPage}
+          setCurrentPage={setCurrentPage}
+          pets={pets}
         />
       )}
+      <div className={styles.Pagination}>
+        {[...Array(Math.ceil(filteredPets.length / petsPerPage))].map((_, index) => (
+          <button key={index} onClick={() => paginate(index + 1)}>
+            {index + 1}
+          </button>
+        ))}
+      </div>
     </section>
+
   );
 };
 

@@ -2,15 +2,17 @@ import { FC, useState } from "react";
 import styles from "./modalEdit.module.css";
 import { IoArrowBackCircleOutline, IoClose } from "react-icons/io5";
 import { Pet } from "@/types";
-import { FiPlusCircle } from "react-icons/fi";
 
 interface ModalEditProps {
   petData: Pet;
   onClose: () => void;
   onEditItem: (editedPet: Pet) => void;
+  petsPerPage: number;
+  setCurrentPage: (pageNumber: number) => void;
+  pets: Pet[]
 }
 
-const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData }) => {
+const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData, petsPerPage, setCurrentPage, pets }) => {
   const [formData, setFormData] = useState<Pet>(petData);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,6 +65,12 @@ const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData }) => {
         throw new Error("Failed to update pet");
       }
       onEditItem(formData);
+
+      const updatedIndex = pets.findIndex((pet) => pet.id === petData.id);
+      const currentPageIndex = Math.floor(updatedIndex / petsPerPage);
+      setCurrentPage(currentPageIndex + 1);
+      
+
       onClose();
     } catch (error) {
       console.error("Error updating pet:", error);
