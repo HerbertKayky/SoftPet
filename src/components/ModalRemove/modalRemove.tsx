@@ -101,7 +101,6 @@ const ModalRemove: FC<ModalRemoveProps> = ({
               />
             </div>
           </div>
-
           <div className={styles.form_section}>
             <div>
               <label>
@@ -109,29 +108,32 @@ const ModalRemove: FC<ModalRemoveProps> = ({
                 Animal
               </label>
               <div className={styles.radio}>
-                <input
-                  type="radio"
-                  id="cachorro"
-                  name="animal"
-                  value="Cachorro"
-                  checked={formData.animal === "Cachorro"}
-                  onChange={handleRadioChange}
-                  readOnly
-                />
-                <label htmlFor="cachorro">Cachorro</label>
-                <input
-                  type="radio"
-                  id="gato"
-                  name="animal"
-                  value="Gato"
-                  checked={formData.animal === "Gato"}
-                  onChange={handleRadioChange}
-                  readOnly
-                />
-                <label htmlFor="gato">Gato</label>
+                <span>
+                  <input
+                    type="radio"
+                    id="cachorro"
+                    name="animal"
+                    value="Cachorro"
+                    checked={formData.animal === "Cachorro"}
+                    onChange={handleRadioChange}
+                    readOnly
+                  />
+                  <label htmlFor="cachorro">Cachorro</label>
+                </span>
+                <span>
+                  <input
+                    type="radio"
+                    id="gato"
+                    name="animal"
+                    value="Gato"
+                    checked={formData.animal === "Gato"}
+                    onChange={handleRadioChange}
+                    readOnly
+                  />
+                  <label htmlFor="gato">Gato</label>
+                </span>
               </div>
             </div>
-
             <div>
               <label>
                 <img className={styles.dna} src="/dna.svg" alt="" />
@@ -167,12 +169,12 @@ const ModalRemove: FC<ModalRemoveProps> = ({
           </div>
 
           <div className={styles.register_buttons}>
-          <button onClick={onClose} className={styles.back_button}>
+            <button onClick={onClose} className={styles.back_button}>
               <IoArrowBackCircleOutline size={28} />
               Voltar
             </button>
             <button type="submit" className={styles.button_register_modal}>
-            <img src="/trash.svg" alt="" />
+              <img src="/trash.svg" alt="" />
               Remover
             </button>
           </div>

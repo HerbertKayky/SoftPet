@@ -39,6 +39,7 @@
   align-items: center;
   margin-bottom: 35px;
   margin-top: 30px;
+  padding-left: 2px;
 }
 
 .button_icon {
@@ -56,9 +57,10 @@
 
 .header_animal h1 {
   font-weight: 500;
+  font-size: 30px;
 }
 
-.div_circle svg {
+.div_circle img {
   width: 300px;
   height: 40px;
 }
@@ -82,41 +84,31 @@
 .radio {
   display: flex;
   gap: 10px;
+  height: 40px;
 }
 
-.radio p {
-  position: relative;
+.radio label {
+  padding: 0;
+  margin: 0;
+  padding-bottom: 5px;
+  margin-left: 7px;
+}
+
+.radio input {
+  margin-left: 3px;
+}
+
+.radio span {
+  display: flex;
+  align-items: center;
+  padding-left: 7px;
   font-size: 18px;
   font-weight: 500;
   border: 3px solid #404a5c;
   border-radius: 10px;
-  display: inline-block;
   width: 100%;
   text-align: left;
-  line-height: 35px;
-  padding-left: 35px;
   cursor: pointer;
-}
-
-.radio p::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 10px;
-  transform: translateY(-50%);
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  border: 3px solid #404a5c;
-}
-
-.radio input[type="radio"]:checked + p {
-  border-color: #fff; /* Mudar a cor da borda do label quando selecionado */
-}
-
-.radio input[type="radio"]:checked + p::before {
-  background-color: #fff; /* Cor de fundo quando selecionado */
-  border-color: #fff; /* Cor da borda quando selecionado */
 }
 
 .form_section span {
@@ -127,6 +119,10 @@
 .form_section > div {
   display: flex;
   flex-direction: column;
+}
+
+.form_section img {
+  padding-right: 6px;
 }
 
 .form_section label {
@@ -183,4 +179,9 @@
   background-image: linear-gradient(to right, #00cafc, #0056e2);
   color: #fff;
   border: none;
+}
+
+.button_register_modal img {
+  margin-right: 4px;
+  width: 22px;
 }

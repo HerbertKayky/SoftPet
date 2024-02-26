@@ -100,10 +100,6 @@
   border-color: #fff;
 }
 
-.selected {
-  border-color: #fff;
-}
-
 .radio span {
   display: flex;
   align-items: center;
@@ -115,7 +111,6 @@
   width: 100%;
   text-align: left;
   cursor: pointer;
-
 }
 
 .form_section span {

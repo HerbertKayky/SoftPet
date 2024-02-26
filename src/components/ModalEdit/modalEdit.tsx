@@ -2,15 +2,13 @@ import { FC, useState } from "react";
 import styles from "./modalEdit.module.css";
 import { IoArrowBackCircleOutline, IoClose } from "react-icons/io5";
 import { Pet } from "@/types";
-
+import { FiPlusCircle } from "react-icons/fi";
 
 interface ModalEditProps {
   petData: Pet;
   onClose: () => void;
   onEditItem: (editedPet: Pet) => void;
 }
-
-
 
 const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData }) => {
   const [formData, setFormData] = useState<Pet>(petData);
@@ -55,19 +53,19 @@ const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData }) => {
     e.preventDefault();
     try {
       const response = await fetch(`http://localhost:3000/pets/${petData.id}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
       if (!response.ok) {
-        throw new Error('Failed to update pet');
+        throw new Error("Failed to update pet");
       }
       onEditItem(formData);
       onClose();
     } catch (error) {
-      console.error('Error updating pet:', error);
+      console.error("Error updating pet:", error);
     }
   };
 
@@ -75,6 +73,9 @@ const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData }) => {
     <div className={styles.register_animal_container}>
       <div className={styles.register_animal}>
         <div className={styles.header_animal}>
+        <div className={styles.div_circle}>
+        <img src="/changeFFF.svg" alt="" />
+          </div>
           <h1>Editar</h1>
           <button className={styles.button_icon} onClick={onClose}>
             <IoClose />
@@ -121,9 +122,6 @@ const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData }) => {
               />
             </div>
           </div>
-
-
-
           <div className={styles.form_section}>
             <div>
               <label>
@@ -131,30 +129,30 @@ const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData }) => {
                 Animal
               </label>
               <div className={styles.radio}>
-                <input
-                  type="radio"
-                  id="cachorro"
-                  name="animal"
-                  value="Cachorro"
-                  checked={formData.animal === "Cachorro"} 
-                  onChange={handleRadioChange}
-                />
-                <label htmlFor="cachorro">Cachorro</label>
-                <input
-                  type="radio"
-                  id="gato"
-                  name="animal"
-                  value="Gato"
-                  checked={formData.animal === "Gato"} 
-                  onChange={handleRadioChange}
-                />
-                <label htmlFor="gato">Gato</label>
+                <span>
+                  <input
+                    type="radio"
+                    id="cachorro"
+                    name="animal"
+                    value="Cachorro"
+                    checked={formData.animal === "Cachorro"}
+                    onChange={handleRadioChange}
+                  />
+                  <label>Cachorro</label>
+                </span>
+                <span>
+                  <input
+                    type="radio"
+                    id="gato"
+                    name="animal"
+                    value="Gato"
+                    checked={formData.animal === "Gato"}
+                    onChange={handleRadioChange}
+                  />
+                  <label>Gato</label>
+                </span>
               </div>
             </div>
-
-
-
-
             <div>
               <label>
                 <img className={styles.dna} src="/dna.svg" alt="" />
@@ -188,6 +186,7 @@ const ModalEdit: FC<ModalEditProps> = ({ onClose, onEditItem, petData }) => {
               Voltar
             </button>
             <button type="submit" className={styles.button_register_modal}>
+            <img src="/changeFFF.svg" alt="" />
               Salvar
             </button>
           </div>
