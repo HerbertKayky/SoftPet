@@ -19,3 +19,8 @@ body {
 button {
   cursor: pointer;
 }
+
+main {
+  height: 130%;
+}
+

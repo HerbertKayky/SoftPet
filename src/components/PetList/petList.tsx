@@ -1,4 +1,9 @@
 import styles from "./petList.module.css";
+import {
+  FaRegArrowAltCircleLeft,
+  FaRegArrowAltCircleRight,
+} from "react-icons/fa";
+
 import { useState, useEffect } from "react";
 import ModalRemove from "../ModalRemove/modalRemove";
 import ModalEdit from "../ModalEdit/modalEdit";
@@ -11,7 +16,6 @@ interface PetListProps {
 }
 
 const PetList: React.FC<PetListProps> = ({ searchTerm }) => {
-
   const [pets, setPets] = useState<Pet[]>([]);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
@@ -43,29 +47,33 @@ const PetList: React.FC<PetListProps> = ({ searchTerm }) => {
 
   const handleRemoveItem = () => {
     if (selectedPetIndex !== -1) {
-      const selectedPet = filteredPets[selectedPetIndex]; 
+      const selectedPet = filteredPets[selectedPetIndex];
       const updatedPets = pets.filter((pet) => pet.id !== selectedPet.id);
       setPets(updatedPets);
       console.log("Pet removido:", selectedPet);
-      setSelectedPetIndex(-1); 
+      setSelectedPetIndex(-1);
     }
     closeModal();
   };
 
   const handleEditItem = (editedPet: Pet) => {
     if (selectedPetIndex !== -1) {
-      const selectedPet = filteredPets[selectedPetIndex]; 
-      const updatedPets = pets.map((pet) => (pet.id === selectedPet.id ? editedPet : pet));
+      const selectedPet = filteredPets[selectedPetIndex];
+      const updatedPets = pets.map((pet) =>
+        pet.id === selectedPet.id ? editedPet : pet
+      );
       setPets(updatedPets);
 
-      const updatedIndex = indexOfFirstPet + filteredPets.findIndex((pet) => pet.id === editedPet.id);
-    if (updatedIndex !== -1) {
-      const updatedPage = Math.ceil((updatedIndex + 1) / petsPerPage);
-      setCurrentPage(updatedPage);
-    }
-      
+      const updatedIndex =
+        indexOfFirstPet +
+        filteredPets.findIndex((pet) => pet.id === editedPet.id);
+      if (updatedIndex !== -1) {
+        const updatedPage = Math.ceil((updatedIndex + 1) / petsPerPage);
+        setCurrentPage(updatedPage);
+      }
+
       console.log("Pet editado:", selectedPet);
-      setSelectedPetIndex(-1); 
+      setSelectedPetIndex(-1);
     }
     closeModal();
   };
@@ -97,26 +105,31 @@ const PetList: React.FC<PetListProps> = ({ searchTerm }) => {
   const indexOfLastPet = currentPage * petsPerPage;
   const indexOfFirstPet = indexOfLastPet - petsPerPage;
 
-
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   const currentPets = filteredPets.slice(indexOfFirstPet, indexOfLastPet);
 
   useEffect(() => {
     if (selectedPetIndex !== -1 && selectedPetIndex >= filteredPets.length) {
-      setSelectedPetIndex(-1); 
+      setSelectedPetIndex(-1);
     }
   }, [filteredPets]);
 
   useEffect(() => {
     if (selectedPetIndex !== -1) {
       const selectedPetId = pets[selectedPetIndex]?.id;
-      const updatedIndex = filteredPets.findIndex((pet) => pet.id === selectedPetId);
+      const updatedIndex = filteredPets.findIndex(
+        (pet) => pet.id === selectedPetId
+      );
       if (updatedIndex === -1) {
-        setSelectedPetIndex(-1); 
+        setSelectedPetIndex(-1);
       }
     }
   }, [pets, filteredPets]);
+
+  const totalPages = Math.ceil(filteredPets.length / petsPerPage);
+  const isFirstPage = currentPage === 1;
+  const isLastPage = currentPage === totalPages;
 
   return (
     <section className={styles.container}>
@@ -198,15 +211,30 @@ const PetList: React.FC<PetListProps> = ({ searchTerm }) => {
           pets={pets}
         />
       )}
-      <div className={styles.Pagination}>
-        {[...Array(Math.ceil(filteredPets.length / petsPerPage))].map((_, index) => (
-          <button key={index} onClick={() => paginate(index + 1)}>
-            {index + 1}
+      {totalPages > 1 && (
+        <div className={styles.pagination}>
+          <button
+            className={styles.paginationButton}
+            disabled={isFirstPage}
+            onClick={() => paginate(currentPage - 1)}
+          >
+            <FaRegArrowAltCircleLeft className={styles.paginationButtonIcon}  />
           </button>
-        ))}
-      </div>
-    </section>
 
+          <span>
+            {currentPage} de {totalPages}
+          </span>
+
+          <button
+            className={styles.paginationButton}
+            disabled={isLastPage}
+            onClick={() => paginate(currentPage + 1)}
+          >
+            <FaRegArrowAltCircleRight className={styles.paginationButtonIcon}  />
+          </button>
+        </div>
+      )}
+    </section>
   );
 };
 

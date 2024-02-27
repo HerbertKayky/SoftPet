@@ -1,5 +1,4 @@
 .container {
-  position: relative;
   width: 95%;
   margin-inline: 40px;
   display: grid;
@@ -130,4 +129,32 @@
 
 .button_remove img {
   padding-right: 6px;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 25px;
+  bottom: 35px;
+}
+
+.pagination span {
+  font-size: 22px;
+}
+
+.paginationButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.paginationButton:focus {
+  outline: none;
+}
+
+.paginationButtonIcon {
+  color: #fff;
+  width: 35px;
+  height: 35px;
 }
